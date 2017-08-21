@@ -64,10 +64,12 @@ print("pseudo-inverse solution", w)
 
 x = tf.placeholder(tf.float32)
 y = tf.placeholder(tf.float32)
-init_value = tf.constant(x_np[0, :], dtype=tf.float32, shape=([d,1]))
+init_value = tf.constant(x_np[0, :].reshape((1, d)), dtype=tf.float32)
+# init_value = tf.zeros([1, d])
 W_single_layer = tf.Variable(init_value)  # vector of d dimensions #
 # b_single_layer = tf.Variable(1e-4*tf.ones([1,1]))
-single_layer_funct = tf.matmul(x, W_single_layer) # + b_single_layer
+single_layer_funct = tf.matmul(W_single_layer, tf.transpose(x)) # + b_single_layer
+
 squared_deltas = tf.square(single_layer_funct - y)
 loss = tf.reduce_sum(squared_deltas)
 optimizer = tf.train.GradientDescentOptimizer(1e-3)
