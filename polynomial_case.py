@@ -215,7 +215,11 @@ def main():
     curr_W1, curr_W2, _, _, rank_W1pow2, eigs_W1pow2 = PolyFeatures_HiddenMapping(x_np, y_np, h, k)
     print("rank of inner matrix", rank_W1pow2)
     sol = curr_W2.dot(hidden_mapping(d_ply, curr_W1))
-    print("rank of the solution", np.linalg.matrix_rank(sol))
+    # print("rank of the solution", np.linalg.matrix_rank(sol))
+    # getting the eigenvalues is a better measure of the rank of the matrix
+    # sometimes the eigs are negligible
+    _, s_sol, _ = np.linalg.svd(sol)
+    print("eigenvalues relative to the solution", s_sol)
 
     return
 
