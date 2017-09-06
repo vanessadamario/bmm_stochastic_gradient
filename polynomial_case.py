@@ -115,7 +115,7 @@ def PolyFeatures_HiddenMapping(x_np, y_np, h, k, bias=False):
     x = tf.placeholder(tf.float32)
     y = tf.placeholder(tf.float32)
     W1 = tf.Variable(init)
-    W2 = tf.random_normal([o, h])
+    W2 = tf.Variable(tf.random_normal([o, h]))
     linear_model = tf.matmul(W1, tf.transpose(x))
     linear_model = tf.matmul(W2, tf.multiply(linear_model, linear_model))
 
