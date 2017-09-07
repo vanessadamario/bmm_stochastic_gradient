@@ -221,6 +221,55 @@ def main():
     _, s_sol, _ = np.linalg.svd(sol)
     print("eigenvalues relative to the solution", s_sol)
 
+    
+    # we compute here the expression of beta, supposing that
+    # W1 = beta X^T 
+    beta = curr_W1.dot(np.linalg.pinv(x_np[0:k, :]))     # beta = W1 X\dagger
+    approx_B = beta.dot(x_np[0:k, :])                    # W1 approx
+
+    # comparison between the original value of B and the linear combination
+    # though the vector beta. The two are equivalent
+    print("||W_1 - beta X^T ||, ||W_1||")
+    print(np.linalg.norm(approx_B - curr_W1), np.linalg.norm(curr_W1))
+
+    # for each output o we compute the matrix of eigenvalues:
+    # check of line (24 & 25)
+    for output in range(o):
+        print("for o == "+str(output+1)+" component we compute the rotation")
+
+        # this is the quantity beta^T diag(A_o) beta
+        betaT_diagA_beta = np.dot(beta.T, np.dot(np.diag(curr_W2[output, :]), beta))
+        # diag of \Lambda and rotation matrix
+        # eigenvector i-th corresponds to vec[:, i]
+        val, vec = np.linalg.eig(betaT_diagA_beta)
+
+        # Xtilda^T = Q X^T
+        Xtilda_trans = (np.dot(vec, x_np[0:k, :]))
+
+        # here I check if the elementwise equation with Hadamard exponent
+        # is equivalent to the result we obtain for X with all points
+        # print("for each point")
+        # for i in range(k):
+        #     Xtilda_TXn = np.dot(Xtilda_trans, x_np[i, :].T)**2
+        #     print(np.dot(val, Xtilda_TXn))
+
+        # here we compute the product between the vector of eigenvalues and
+        # the hadamard product of (Xtilda^T X) = <lambda, (XTilda^T X).^2>
+        hadamard_XtildaX = np.dot(val, (np.dot(Xtilda_trans, x_np[0:k, :].T))**2)
+        print("comparison of Y's")
+        print(hadamard_XtildaX)
+        print(y_np[output, 0:k])
+
+        # Here we should get the same lambda in val
+        # as the dot product of Y_o with the inverse of (XTilda^T X).^2
+        # lambda0 = < Y_o, ((XTilda^T X).^2)^(-1) >
+
+        lambda_0 = np.dot(y_np[output, 0:k], np.linalg.inv((np.dot(Xtilda_trans, x_np[0:k, :].T))**2))
+
+        print("comparison between lambda")
+        print(lambda_0)
+        print(val)
+
     return
 
 
