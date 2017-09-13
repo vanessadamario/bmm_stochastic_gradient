@@ -31,7 +31,7 @@ def PolyFeatures_HiddenMapping(x_np, y_np, h, k, bias=False):
 
     grad_step = 1e-4    # learning rate
     init_val = 1e-3     # initialization value, used only in the bias term
-    n_iters = int(1e5)  # number of iterations
+    n_iters = int(2e5)  # number of iterations
     _, d = x_np.shape
     o, _ = y_np.shape
 
@@ -116,9 +116,9 @@ def hidden_mapping(d_ply, w):
 def main():
 
     n = 4                 # number of sample, for both training and test
-    d = 7                 # input dimension (# of features)
+    d = 4                 # input dimension (# of features)
     h = 5                 # number of hidden nodes
-    o = 4                # dimension of the output, given a sample
+    o = 6                # dimension of the output, given a sample
     perc = 0.5            # percentage of data used in training
     bias = False
     degree = 2
@@ -177,7 +177,7 @@ def main():
         print("diagonalization of the quantity beta^T diag AO beta")
         # this is the quantity beta^T diag(A_o) beta
         diagonalize = np.dot(beta.T, np.dot(np.diag(curr_W2[output, :]), beta))
-        val, vec = np.linalg.eig(diagonalize)
+        val, vec = np.linalg.eigh(diagonalize)
         X_tilda = np.dot(x_np[:k, :].T, vec.T)
         print(np.dot(x_np[:k, :], np.dot(X_tilda, np.dot(np.diag(val), np.dot(X_tilda.T, x_np[:k, :].T)))))
         print(y_np[output, :k])
