@@ -169,9 +169,10 @@ def main():
         #print(np.dot(x_np[:k, :], np.dot(Q, x_np[:k, :].T)))
         #print(y_np[out, :k])
 
-        print("naive approach, we leave the matrices A and B as they are")
-        P = np.dot(curr_W1.T, np.dot(np.diag(curr_W2[output, :]), curr_W1))
-        print(np.dot(x_np[:k, :], np.dot(P, x_np[:k, :].T)))
+        # print("naive approach, we leave the matrices A and B as they are")
+        # P = np.dot(curr_W1.T, np.dot(np.diag(curr_W2[output, :]), curr_W1))
+        # print(np.dot(x_np[:k, :], np.dot(P, x_np[:k, :].T)))
+        print("true value y")
         print(y_np[output, :k])
 
         print("diagonalization of the quantity beta^T diag AO beta")
@@ -180,7 +181,14 @@ def main():
         val, vec = np.linalg.eigh(diagonalize)
         X_tilda = np.dot(x_np[:k, :].T, vec)
         print(np.dot(x_np[:k, :], np.dot(X_tilda, np.dot(np.diag(val), np.dot(X_tilda.T, x_np[:k, :].T)))))
-        print(y_np[output, :k])
+        
+        had = np.dot(X_tilda.T, x_np[:k, :].T)**2
+        print("eigenvalues thru inverse")
+        print(np.dot(y_np[output, :k], np.linalg.inv(had)))
+        print("eigenvalues thru diag")
+        print(val)
+
+        
 
 
 
