@@ -178,7 +178,7 @@ def main():
         # this is the quantity beta^T diag(A_o) beta
         diagonalize = np.dot(beta.T, np.dot(np.diag(curr_W2[output, :]), beta))
         val, vec = np.linalg.eigh(diagonalize)
-        X_tilda = np.dot(x_np[:k, :].T, vec.T)
+        X_tilda = np.dot(x_np[:k, :].T, vec)
         print(np.dot(x_np[:k, :], np.dot(X_tilda, np.dot(np.diag(val), np.dot(X_tilda.T, x_np[:k, :].T)))))
         print(y_np[output, :k])
 
