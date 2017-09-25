@@ -188,7 +188,11 @@ def main():
         print("eigenvalues thru diag")
         print(val)
 
-        
+        print("comparison of prediction")
+        # print("true value", y_np[output, k:])
+        print("predicted by the model", np.dot(curr_W2[output, :], (np.dot(curr_W1, x_np[k:, :].T))**2) )
+        print("with the inverse", np.dot(np.dot(y_np[output, :k], np.linalg.inv(had)), np.dot(X_tilda.T, x_np[k:, :].T)**2))
+        print("\n")
 
 
 
